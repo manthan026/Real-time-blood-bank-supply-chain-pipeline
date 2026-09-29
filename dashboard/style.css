@@ -1,0 +1,64 @@
+/* Background */
+.stApp{
+    background:#f4f7fb;
+}
+
+/* Dashboard Title */
+h1{
+    color:#b71c1c;
+    text-align:center;
+    font-weight:700;
+}
+
+/* Section Headers */
+h3{
+    color:#0d47a1;
+    font-weight:bold;
+}
+
+/* KPI Cards */
+div[data-testid="metric-container"]{
+    background:white;
+    border-radius:15px;
+    padding:18px;
+    box-shadow:0 4px 12px rgba(0,0,0,.12);
+    border-left:6px solid #d32f2f;
+}
+
+/* Sidebar */
+section[data-testid="stSidebar"]{
+    background:#eceff1;
+}
+
+/* Buttons */
+.stButton>button{
+    background:#d32f2f;
+    color:white;
+    border-radius:10px;
+    border:none;
+}
+
+.stButton>button:hover{
+    background:#8e0000;
+}
+
+/* Download Button */
+.stDownloadButton>button{
+    background:#1565c0;
+    color:white;
+    border-radius:10px;
+}
+
+/* Dataframe */
+[data-testid="stDataFrame"]{
+    border-radius:15px;
+    overflow:hidden;
+}
+
+/* Charts */
+.js-plotly-plot{
+    background:white;
+    border-radius:15px;
+    padding:10px;
+    box-shadow:0 3px 10px rgba(0,0,0,.1);
+}

@@ -1,0 +1,7 @@
+# Streaming Pipeline Dependencies (Kafka & Spark Streaming)
+pyspark>=3.5.0
+kafka-python>=2.0.2
+mysql-connector-python>=8.0.0
+python-dotenv>=1.0.0
+faker>=20.0.0
+pandas>=2.0.0,<3.0.0

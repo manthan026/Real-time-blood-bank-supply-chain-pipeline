@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual Environment
+venv_linux/
+venv/
+.venv/
+
+# Local Databases
+*.db
+blood_bank_local.db
+
+
+# VS Code
+.vscode/
+
+# Environment Variables
+.env
+
+# Spark Checkpoints
+checkpoints/
+spark/checkpoints/
+
+# Python Cache
+spark/__pycache__/
+
+# JAR Files
+jars/
+
+# Logs
+*.log
+
+# OS Files
+.DS_Store
+Thumbs.db
