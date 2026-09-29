@@ -42,12 +42,12 @@ def get_db_status():
 
 
 def get_mysql_connection():
-    """Attempts connection to MySQL RDS if configured."""
-    host = get_secret("MYSQL_HOST")
-    port = get_secret("MYSQL_PORT", "3306")
-    user = get_secret("MYSQL_USER")
-    password = get_secret("MYSQL_PASSWORD")
-    database = get_secret("MYSQL_DATABASE")
+    """Attempts connection to MySQL RDS / Railway MySQL if configured."""
+    host = get_secret("MYSQL_HOST") or get_secret("MYSQLHOST")
+    port = get_secret("MYSQL_PORT") or get_secret("MYSQLPORT", "3306")
+    user = get_secret("MYSQL_USER") or get_secret("MYSQLUSER")
+    password = get_secret("MYSQL_PASSWORD") or get_secret("MYSQLPASSWORD")
+    database = get_secret("MYSQL_DATABASE") or get_secret("MYSQLDATABASE")
 
     if not host or host in ("your-rds-endpoint", "your_rds_endpoint", "localhost") and not password:
         return None

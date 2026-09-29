@@ -10,18 +10,32 @@ import uuid
 from datetime import datetime, timedelta
 from faker import Faker
 
-from config import (
-    BLOOD_BANKS,
-    BLOOD_GROUPS,
-    HOSPITALS,
-    CITIES,
-    STATE,
-    COMPONENTS,
-    SCREENING_STATUS,
-    DISPATCH_STATUS,
-    ALERT_LEVELS,
-    TRANSFER_STATUS
-)
+try:
+    from config import (
+        BLOOD_BANKS,
+        BLOOD_GROUPS,
+        HOSPITALS,
+        CITIES,
+        STATE,
+        COMPONENTS,
+        SCREENING_STATUS,
+        DISPATCH_STATUS,
+        ALERT_LEVELS,
+        TRANSFER_STATUS
+    )
+except ImportError:
+    from producer.config import (
+        BLOOD_BANKS,
+        BLOOD_GROUPS,
+        HOSPITALS,
+        CITIES,
+        STATE,
+        COMPONENTS,
+        SCREENING_STATUS,
+        DISPATCH_STATUS,
+        ALERT_LEVELS,
+        TRANSFER_STATUS
+    )
 
 # Initialize Faker
 fake = Faker("en_IN")

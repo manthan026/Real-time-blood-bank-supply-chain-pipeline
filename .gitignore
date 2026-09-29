@@ -15,8 +15,9 @@ blood_bank_local.db
 # VS Code
 .vscode/
 
-# Environment Variables
+# Environment Variables & Secrets
 .env
+.streamlit/secrets.toml
 
 # Spark Checkpoints
 checkpoints/

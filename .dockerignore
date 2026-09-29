@@ -1,0 +1,30 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+venv_linux/
+
+# Git & IDE
+.git/
+.gitignore
+.vscode/
+.idea/
+
+# Environment files and secrets
+.env
+.env.*
+.streamlit/secrets.toml
+
+# Databases and checkpoints
+*.db
+checkpoints/
+spark/checkpoints/
+jars/
+*.log
+
+# Documentation assets
+# Real-Time Blood Bank Supply Chain.txt

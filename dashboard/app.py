@@ -23,6 +23,8 @@ from db import load_data, get_db_status
 
 def load_css():
     css_path = os.path.join(current_dir, "style.css")
+    if not os.path.exists(css_path):
+        css_path = os.path.join(current_dir, "dashboard", "style.css")
     if os.path.exists(css_path):
         with open(css_path, "r", encoding="utf-8") as f:
             st.markdown(
