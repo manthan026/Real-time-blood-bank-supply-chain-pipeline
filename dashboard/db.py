@@ -212,15 +212,74 @@ def _add_live_simulated_event():
         pass
 
 
+def _seed_mysql_db(conn):
+    """Seeds MySQL with initial realistic streaming events if empty."""
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM blood_donations")
+        count = cursor.fetchone()[0]
+
+        if count < 100:
+            try:
+                from faker_data import generate_event
+            except ImportError:
+                from producer.faker_data import generate_event
+
+            now = datetime.now()
+            records = []
+            for i in range(150):
+                days_ago = random.uniform(0, 6)
+                minutes_ago = random.uniform(0, 1440)
+                event_time = now - timedelta(days=days_ago, minutes=minutes_ago)
+                raw = generate_event()
+                rec = _transform_event(raw, event_time)
+                records.append(rec)
+
+            cols = list(records[0].keys())
+            placeholders = ", ".join(["%s"] * len(cols))
+            sql = f"REPLACE INTO blood_donations ({', '.join(cols)}) VALUES ({placeholders})"
+            cursor.executemany(sql, [[r[c] for c in cols] for r in records])
+            conn.commit()
+        cursor.close()
+    except Exception:
+        pass
+
+
+def _add_live_mysql_event(conn):
+    """Adds a new real-time event directly into MySQL to simulate continuous streaming."""
+    try:
+        try:
+            from faker_data import generate_event
+        except ImportError:
+            from producer.faker_data import generate_event
+
+        raw = generate_event()
+        rec = _transform_event(raw, datetime.now())
+
+        cursor = conn.cursor()
+        cols = list(rec.keys())
+        placeholders = ", ".join(["%s"] * len(cols))
+        sql = f"REPLACE INTO blood_donations ({', '.join(cols)}) VALUES ({placeholders})"
+        cursor.execute(sql, [rec[c] for c in cols])
+        conn.commit()
+        cursor.close()
+    except Exception:
+        pass
+
+
 def load_data():
     """
-    Loads blood bank data from MySQL RDS if available,
+    Loads blood bank data from MySQL (Local Container / RDS / Cloud) if available,
     otherwise loads from the local real-time SQLite database.
     """
     mysql_conn = get_mysql_connection()
 
     if mysql_conn is not None:
         try:
+            # Seed initial records and insert live streaming event into MySQL
+            _seed_mysql_db(mysql_conn)
+            _add_live_mysql_event(mysql_conn)
+
             query = """
             SELECT *
             FROM blood_donations
@@ -228,8 +287,17 @@ def load_data():
             """
             df = pd.read_sql(query, mysql_conn)
             mysql_conn.close()
+
+            host = get_secret("MYSQL_HOST") or get_secret("MYSQLHOST") or "127.0.0.1"
             _db_status["is_live"] = True
-            _db_status["message"] = f"Connected to MySQL RDS ({os.getenv('MYSQL_HOST')})"
+            _db_status["message"] = f"Connected to MySQL ({host})"
+
+            # Ensure correct data types
+            df["units"] = pd.to_numeric(df["units"], errors="coerce").fillna(0)
+            df["available_units"] = pd.to_numeric(df["available_units"], errors="coerce").fillna(0)
+            if "event_type" in df.columns:
+                df["event_type"] = df["event_type"].str.upper()
+
             return df
         except Exception as e:
             if mysql_conn:

@@ -65,7 +65,7 @@ Real-Time Monitoring • Kafka • Spark Structured Streaming • AWS RDS • St
 # Connection & Refresh Banner
 is_live_db, db_message = get_db_status()
 status_badge_color = "#2e7d32" if is_live_db else "#e65100"
-status_badge_text = "🟢 RDS MySQL Connected" if is_live_db else "⚡ Live Simulation Stream"
+status_badge_text = "🟢 MySQL Database Active" if is_live_db else "⚡ Live Simulation Stream"
 
 st.markdown(
     f"""
